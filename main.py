@@ -12,9 +12,7 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 @app.route("/")
 def index():
-    db_sess = db_session.create_session()
-    news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("base.html")
+    return render_template("index.html")
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
