@@ -14,6 +14,10 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 def index():
     return render_template("index.html")
 
+@app.route("/dog_test")
+def dog():
+    return render_template("dog_test.html")
+
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
