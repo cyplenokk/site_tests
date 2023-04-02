@@ -42,6 +42,17 @@
         object-fit: cover;
         width: 30px;
     }
+    .navbar-text {
+        right: 30px;
+    }
+    .navbar-text1 {
+        right: 30px;
+        margin-right: 20px;
+        object-fit: cover;
+        font-size: 12pt;
+        color: white;
+
+    }
 
 
     </style>
@@ -82,9 +93,18 @@
                 </li>
             </ul>
 
+            {% if if_auto %}
+
+            <div class="navbar-text1">
+                {{ user }}
+            </div>
+            <br>
+
+            {% else %}
             <a href="/auto">
                 <img src="static/img/passkey.svg" class="auto" alt="Bootstrap">
             </a>
+            {% endif %}
 
 
             <form class="form-inline my-2 my-lg-0">
@@ -139,5 +159,7 @@
 </body>
 
 </html>
+
+
 
 
