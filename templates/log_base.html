@@ -51,8 +51,14 @@
         object-fit: cover;
         font-size: 12pt;
         color: white;
-
     }
+    .logg {
+        margin-right: 20px;
+        object-fit: cover;
+        width: 30px;
+    }
+
+
 
 
     </style>
@@ -62,7 +68,7 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div>
-            <b><a class="navbar-brand" href="#">Tests-online.ru</a></b>
+            <b><a class="navbar-brand" href="/">Tests-online.ru</a></b>
             <small><span class="navbar-text">
                 развлекательные тесты онлайн
             </span></small>
@@ -75,7 +81,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">О нас</a>
@@ -98,6 +104,9 @@
             <div class="navbar-text1">
                 {{ user }}
             </div>
+            <a href="/personal">
+                <img src="static/img/logged_person1.svg" class="logg" alt="Bootstrap">
+            </a>
             <br>
 
             {% else %}
@@ -107,10 +116,13 @@
             {% endif %}
 
 
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Напишите что-нибудь" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Найти тест</button>
+            <form method="POST" class="form-inline" action="/search">
+                <p>
+                    {{ form.request(class="form-control") }} </p>
+                <p> {{ form.submit(type="submit", class="btn btn-primary", value="Найти тест") }}
+                </p>
             </form>
+
         </div>
     </nav>
 

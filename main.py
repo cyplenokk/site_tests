@@ -7,7 +7,9 @@ from data.users import User
 from data import db_session
 from flask import Flask, render_template, redirect
 from data.users import User
-from forms.user import RegisterForm, LoginForm
+from data.reqq import Requests
+
+from forms.user import RegisterForm, LoginForm, RequestsForm
 from flask_login import LoginManager, logout_user, login_required
 
 app = Flask(__name__)
@@ -24,17 +26,45 @@ login_manager.init_app(app)
 
 if_auto = False
 user_name = ''
+user_email = ''
+
+titles = ["тест 'Какая ты собака?'", "тест 'Какой ты напиток?'", "тест 'Какая ты кошка?'", "тест 'Какая ты шиншилла?'"]
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
     global if_auto, user_name
+    form = RequestsForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        req = Requests(
+            request=form.request.data
+        )
+        db_sess.add(req)
+        db_sess.commit()
+        return redirect('/search')
+
+
+
 
     if not if_auto:
-        return render_template("index.html")
+        return render_template("log_index.html", form=form, if_auto=if_auto, user=user_name)
+    else:
+        return render_template("log_index.html", if_auto=if_auto, user=user_name, form=form)
+
+
+@app.route("/search", methods=['GET'])
+def search():
+    global if_auto, user_name, titles
+    form = RequestsForm()
+    db_sess = db_session.create_session()
+    reqq = db_sess.query(Requests).first()
+
+    if not if_auto:
+        return render_template("search_index.html", titles=titles, request=reqq, form=form)
 
     else:
-        return render_template("log_index.html", if_auto=if_auto, user=user_name)
+        return render_template("search_index.html", if_auto=if_auto, user=user_name, titles=titles, request=reqq)
 
 
 @app.route("/auto", methods=['GET', 'POST'])
@@ -50,12 +80,12 @@ def load_user(user_id):
 
 @app.route("/dog_test")
 def dog():
-    return render_template("dog_test.html")
+    return render_template("dog_test.html", if_auto=if_auto, user=user_name)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    global if_auto, user_name
+    global if_auto, user_name, user_email
 
     form = RegisterForm()
     if form.validate_on_submit():
@@ -77,13 +107,14 @@ def register():
         db_sess.commit()
         if_auto = True
         user_name = user.name
+        user_email = user.email
         return redirect("/")
-    return render_template('register.html', title='Регистрация', form=form)
+    return render_template('register.html', title='Регистрация', form=form, if_auto=if_auto, user=user_name)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global if_auto
+    global if_auto, user_name, user_email
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -91,11 +122,14 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             if_auto = True
+            user_name = user.name
+            user_email = user.email
             return redirect("/")
         return render_template('login.html',
                                message="Неправильный логин или пароль. Возможно, требуется регистрация",
                                form=form)
-    return render_template('login.html', title='Авторизация', form=form)
+
+    return render_template('login.html', title='Авторизация', form=form, if_auto=if_auto, user=user_name)
 
 
 @app.route('/logout')
@@ -103,6 +137,12 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/personal')
+def person():
+    form = RequestsForm()
+    return render_template("personal.html", user=user_name, if_auto=if_auto, email=user_email, form=form)
 
 
 def main():
@@ -113,5 +153,6 @@ def main():
 
 if __name__ == '__main__':
     db_session.global_init("db/tests.db")
+
 
     app.run(port=8080)
