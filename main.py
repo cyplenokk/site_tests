@@ -7,6 +7,7 @@ from data.users import User
 from data import db_session
 from flask import Flask, render_template, redirect
 from data.users import User
+from data.results_dog import Results_Dog
 from data.reqq import Requests
 
 from forms.user import RegisterForm, LoginForm, RequestsForm
@@ -17,13 +18,30 @@ app.config['SECRET_KEY'] = 'test_project'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
 if_auto = False
 user_name = ''
 user_email = ''
 searching = ''
+result = ''
 
-titles = ["тест 'Какая ты собака?'", "тест 'Какой ты напиток?'", "тест 'Какая ты кошка/кот?'", "тест 'Какая ты шиншилла?'"]
+titles = ["тест 'какая ты собака?'", "тест 'какой ты напиток?'", "тест 'какая ты кошка/кот?'",
+          "тест 'какая ты шиншилла?'"]
+
+dog = {
+    'бульдог': ['Сангвинник', 'Ассам', 'кино', 'силы', 'желтый'],
+    'пудель': ['Флегматик', 'Улун', 'рисование', 'богатство', 'синий'],
+    'гончая': ['Холерик', 'Фруктовый', 'спорт', 'бессмертие', 'красный'],
+    'бобтейл': ['Меланхолик', 'Нет', 'книги', 'любовь', 'зеленый']
+}
+
+dog_results = {
+    'бульдог': 0,
+    'пудель': 0,
+    'гончая': 0,
+    'бобтейл': 0
+}
+
+dog_spisok = []
 
 
 @app.route("/")
@@ -40,7 +58,7 @@ def index():
 def search():
     global if_auto, user_name, titles, searching
 
-    searching = request.args['title']
+    searching = request.args['title'].lower()
 
     if not if_auto:
         return render_template("search_index.html", titles=titles, request=searching, if_auto=if_auto, user=user_name)
@@ -60,9 +78,24 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route("/dog_test")
-def dog():
-    return render_template("dog_test.html", if_auto=if_auto, user=user_name)
+@app.route("/dog_test_1", methods=['POST', 'GET'])
+def dog_1():
+    global dog_spisok, dog, dog_results, result
+
+    if request.method == 'POST':
+
+        result = request.form.get('temperament')
+
+        for key in dog:
+            if key[0] == result:
+                dog_results[key] += 1
+                dog_spisok.append(result)
+        return redirect("/")
+    else:
+
+        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result)
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -130,12 +163,10 @@ def person():
 def main():
     db_session.global_init("db/tests.db")
 
-
     app.run(port=8080)
 
 
 if __name__ == '__main__':
     db_session.global_init("db/tests.db")
-
 
     app.run(port=8080)
