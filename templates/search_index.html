@@ -1,68 +1,224 @@
-{% extends "log_base.html" %}
+<!doctype html>
+<html lang="en">
 
 
-{% block content %}
-<h1 class="header_site">Результаты по запросу</h1><br>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <title>{{title}}</title>
 
-<div class="container text-center">
-    <div class="row">
-        {% if len(title) == 4 %}
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="static/img/dog1.jpeg" class="card-img-top1" alt="...">
-                <div class="card-body shadow-lg bg-body-tertiary rounded">
-                    <h5 class="card-title">Какая ты собака?</h5>
-                    <p class="card-text ">Узнай, какая порода собаки больше всего подходит тебе по темпераменту и
-                        характеру!</p>
-                    <a href="/dog_test" class="btn btn-primary">Начать тест</a>
+    <style>
+    .site-header {
+        justify-content: space-between;
+        align-items: center;
+     }
+    .header_site {
+        text-align: center;
+    }
+    .card-img-top1 {
+        height: 190px;
+        object-fit: cover;
+    }
+    .card-img-top2 {
+        height: 215px;
+        object-fit: cover;
+    }
+    .card-img-top3 {
+        height: 215px;
+        object-fit: cover;
+    }
+    .container text-center {
+        grid-gap: 10px;
+    }
+    .card {
+        margin-bottom: 30px;
+    }
+    .auto {
+        margin-right: 20px;
+        object-fit: cover;
+        width: 30px;
+    }
+    .navbar-text {
+        right: 30px;
+    }
+    .navbar-text1 {
+        right: 30px;
+        margin-right: 20px;
+        object-fit: cover;
+        font-size: 12pt;
+        color: white;
+    }
+    .logg {
+        margin-right: 20px;
+        object-fit: cover;
+        width: 30px;
+    }
+
+    </style>
+
+</head>
+<body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div>
+            <b><a class="navbar-brand" href="/">Tests-online.ru</a></b>
+            <small><span class="navbar-text">
+                развлекательные тесты онлайн
+            </span></small>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">О нас</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Статистика</a>
+                </li>
+            </ul>
+
+            {% if if_auto %}
+
+            <div class="navbar-text1">
+                {{ user }}
+            </div>
+            <a href="/personal">
+                <img src="static/img/logged_person1.svg" class="logg" alt="Bootstrap">
+            </a>
+            <br>
+
+            {% else %}
+            <a href="/auto">
+                <img src="static/img/passkey.svg" class="auto" alt="Bootstrap">
+            </a>
+            {% endif %}
+
+        </div>
+    </nav>
+
+</header>
+
+<!-- Begin page content -->
+
+<main>
+    <br>
+    <h1 class="header_site">Результаты по запросу</h1><br>
+
+    <div class="container text-center">
+        <div class="row">
+            {% if request in titles[0] %}
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="static/img/dog1.jpeg" class="card-img-top1" alt="...">
+                    <div class="card-body shadow-lg bg-body-tertiary rounded">
+                        <h5 class="card-title">Какая ты собака?</h5>
+                        <p class="card-text ">Узнай, какая порода собаки больше всего подходит тебе по темпераменту и
+                            характеру!</p>
+                        <a href="/dog_test" class="btn btn-primary">Начать тест</a>
+                    </div>
                 </div>
             </div>
-        </div>
+            {% endif %}
 
-        {% if len(title) == 4 %}
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="static/img/drink.jpg" class="card-img-top2" alt="...">
-                <div class="card-body shadow-lg bg-body-tertiary rounded">
-                    <h5 class="card-title">Какой ты напиток?</h5>
-                    <p class="card-text">Пройди тест и узнай, какой ты напиток, исходя из твоих качеств</p>
-                    <a href="#" class="btn btn-primary">Начать тест</a>
+            {% if request in titles[1] %}
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="static/img/drink.jpg" class="card-img-top2" alt="...">
+                    <div class="card-body shadow-lg bg-body-tertiary rounded">
+                        <h5 class="card-title">Какой ты напиток?</h5>
+                        <p class="card-text">Пройди тест и узнай, какой ты напиток, исходя из твоих качеств</p>
+                        <a href="#" class="btn btn-primary">Начать тест</a>
+                    </div>
                 </div>
             </div>
-        </div>
+            {% endif %}
 
-        {% if len(title) == 4 %}
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="static/img/cat1.jpg" class="card-img-top3" alt="...">
-                <div class="card-body shadow-lg bg-body-tertiary rounded">
-                    <h5 class="card-title">Какой ты кот?</h5>
-                    <p class="card-text">Сфинкс или русская голубая? Пройди тест и узнай!</p>
-                    <a href="#" class="btn btn-primary">Начать тест</a>
+            {% if request in titles[2] %}
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="static/img/cat1.jpg" class="card-img-top3" alt="...">
+                    <div class="card-body shadow-lg bg-body-tertiary rounded">
+                        <h5 class="card-title">Какой ты кот?</h5>
+                        <p class="card-text">Сфинкс или русская голубая? Пройди тест и узнай!</p>
+                        <a href="#" class="btn btn-primary">Начать тест</a>
+                    </div>
                 </div>
             </div>
-        </div>
+            {% endif %}
 
-        {% if len(title) == 4 %}
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="static/img/chichilla.jpg" class="card-img-top3" alt="...">
-                <div class="card-body shadow-lg bg-body-tertiary rounded">
-                    <h5 class="card-title">Какая ты шиншилла?</h5>
-                    <p class="card-text">В этом тесте ты узнаешь, какую шиншиллу тебе лучше завести</p>
-                    <a href="#" class="btn btn-primary">Начать тест</a>
+            {% if request in titles[3] %}
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="static/img/chichilla.jpg" class="card-img-top3" alt="...">
+                    <div class="card-body shadow-lg bg-body-tertiary rounded">
+                        <h5 class="card-title">Какая ты шиншилла?</h5>
+                        <p class="card-text">В этом тесте ты узнаешь, какую шиншиллу тебе лучше завести</p>
+                        <a href="#" class="btn btn-primary">Начать тест</a>
+                    </div>
                 </div>
             </div>
+            {% endif %}
         </div>
-        {% else %}
-        <div>мльмжльвыльмвь</div>
-        {% endif %}
     </div>
+</main>
+
+
+<div class="b-example-divider"></div>
+
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                <svg class="bi" width="30" height="24">
+                    <use xlink:href="#bootstrap"/>
+                </svg>
+            </a>
+            <span class="mb-3 mb-md-0 text-muted">2023, Yandex Lyceum</span>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-muted" href="#">
+                <svg class="bi" width="24" height="24">
+                    <use xlink:href="#twitter"/>
+                </svg>
+            </a></li>
+            <li class="ms-3"><a class="text-muted" href="#">
+                <svg class="bi" width="24" height="24">
+                    <use xlink:href="#instagram"/>
+                </svg>
+            </a></li>
+            <li class="ms-3"><a class="text-muted" href="#">
+                <svg class="bi" width="24" height="24">
+                    <use xlink:href="#facebook"/>
+                </svg>
+            </a></li>
+        </ul>
+    </footer>
 </div>
 
 
-{% endblock %}
+</body>
 
+</html>
 
 
 

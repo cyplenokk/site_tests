@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from werkzeug.utils import redirect
 
 from data import db_session
@@ -23,44 +23,27 @@ user_name = ''
 user_email = ''
 searching = ''
 
-titles = ["тест 'Какая ты собака?'", "тест 'Какой ты напиток?'", "тест 'Какая ты кошка?'", "тест 'Какая ты шиншилла?'"]
+titles = ["тест 'Какая ты собака?'", "тест 'Какой ты напиток?'", "тест 'Какая ты кошка/кот?'", "тест 'Какая ты шиншилла?'"]
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/")
 def index():
     global if_auto, user_name, searching
-    form = RequestsForm()
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        req = Requests(
-            title=form.request.data
-        )
-        searching = req.title
-        db_sess.add(req)
-        db_sess.commit()
-        return redirect('/search')
 
     if not if_auto:
-        return render_template("log_index.html", form=form, if_auto=if_auto, user=user_name)
+        return render_template("log_index.html", if_auto=if_auto, user=user_name)
     else:
-        return render_template("log_index.html", if_auto=if_auto, user=user_name, form=form)
+        return render_template("log_index.html", if_auto=if_auto, user=user_name)
 
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     global if_auto, user_name, titles, searching
-    form = RequestsForm()
 
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        req = Requests()
-        req.title = form.request.data
-        db_sess.add(req)
-        db_sess.commit()
-        return redirect('/search')
+    searching = request.args['title']
 
     if not if_auto:
-        return render_template("search_index.html", titles=titles, request=searching, form=form)
+        return render_template("search_index.html", titles=titles, request=searching, if_auto=if_auto, user=user_name)
 
     else:
         return render_template("search_index.html", if_auto=if_auto, user=user_name, titles=titles, request=searching)
