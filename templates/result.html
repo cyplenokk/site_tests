@@ -23,14 +23,13 @@
     height: 10px;
   }
   .title {
-    margin: auto;
-    width: 50%;
-    border: 3px solid green;
-    padding: 10px;
+    text-align: center;
   }
-
-
-
+  .title-1 {
+    text-align: center;
+    position: relative;
+    top: -870px;
+  }
 
 
 </style>
@@ -40,17 +39,10 @@
 
 <div class="card mx-auto p-2">
     <div class="card-body">
-        <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0"
-             aria-valuemax="100">
-            <div class="progress-bar" style="width: 13%">13%</div>
+        <h2 class="title">Результаты</h2>
         </div>
-        <br>
-        <img src="static/img/dog1.jpeg" class="img" alt="...">
-
-        <h3 class="title">{{title}}</h3> <br>
-
-
-        <p>{{ spisok }}</p>
+        <h4 class="title-1">Вы {{title}}!</h4>
+        <h4 class="title-1">{{spis}}</h4>
     </div>
 </div>
 

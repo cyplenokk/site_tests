@@ -19,6 +19,7 @@ class User(SqlAlchemyBase):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
 
+    results_dog = orm.relationship("Results_Dog", back_populates='user')
     results = orm.relationship("Results", back_populates='user')
 
     def set_password(self, password):

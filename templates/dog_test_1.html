@@ -38,7 +38,7 @@
     <div class="card-body">
         <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0"
              aria-valuemax="100">
-            <div class="progress-bar" style="width: 13%">13%</div>
+            <div class="progress-bar" style="width: {{progress}}">{{progress}}</div>
         </div>
         <br>
         <img src="static/img/dog1.jpeg" class="img" alt="...">
@@ -65,6 +65,7 @@
             <input type=submit value={{ message }} >
         </form>
         <p>{{ spisok }}</p>
+        <p>{{ count }}</p>
     </div>
 </div>
 
