@@ -17,35 +17,28 @@ app.config['SECRET_KEY'] = 'test_project'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-from forms.user import RegisterForm
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 if_auto = False
 user_name = ''
 user_email = ''
+searching = ''
 
 titles = ["тест 'Какая ты собака?'", "тест 'Какой ты напиток?'", "тест 'Какая ты кошка?'", "тест 'Какая ты шиншилла?'"]
 
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    global if_auto, user_name
+    global if_auto, user_name, searching
     form = RequestsForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         req = Requests(
-            request=form.request.data
+            title=form.request.data
         )
+        searching = req.title
         db_sess.add(req)
         db_sess.commit()
         return redirect('/search')
-
-
-
 
     if not if_auto:
         return render_template("log_index.html", form=form, if_auto=if_auto, user=user_name)
@@ -53,18 +46,24 @@ def index():
         return render_template("log_index.html", if_auto=if_auto, user=user_name, form=form)
 
 
-@app.route("/search", methods=['GET'])
+@app.route("/search", methods=['GET', 'POST'])
 def search():
-    global if_auto, user_name, titles
+    global if_auto, user_name, titles, searching
     form = RequestsForm()
-    db_sess = db_session.create_session()
-    reqq = db_sess.query(Requests).first()
+
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        req = Requests()
+        req.title = form.request.data
+        db_sess.add(req)
+        db_sess.commit()
+        return redirect('/search')
 
     if not if_auto:
-        return render_template("search_index.html", titles=titles, request=reqq, form=form)
+        return render_template("search_index.html", titles=titles, request=searching, form=form)
 
     else:
-        return render_template("search_index.html", if_auto=if_auto, user=user_name, titles=titles, request=reqq)
+        return render_template("search_index.html", if_auto=if_auto, user=user_name, titles=titles, request=searching)
 
 
 @app.route("/auto", methods=['GET', 'POST'])
@@ -147,6 +146,7 @@ def person():
 
 def main():
     db_session.global_init("db/tests.db")
+
 
     app.run(port=8080)
 

@@ -61,6 +61,7 @@
 
 
 
+
     </style>
 
 </head>
@@ -116,10 +117,13 @@
             {% endif %}
 
 
-            <form method="POST" class="form-inline" action="/search">
+            <form method="post" class="form-inline" action="">
+                {{ form.hidden_tag() }}
                 <p>
-                    {{ form.request(class="form-control") }} </p>
-                <p> {{ form.submit(type="submit", class="btn btn-primary", value="Найти тест") }}
+                    {{ form.request( class="form-control") }}
+                </p>
+                <p>
+                    {{ form.submit(type="submit", class="btn btn-primary", value="Найти тест") }}
                 </p>
             </form>
 
