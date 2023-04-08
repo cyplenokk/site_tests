@@ -28,10 +28,10 @@ titles = ["тест 'какая ты собака?'", "тест 'какой ты
           "тест 'какая ты шиншилла?'"]
 
 dog = {
-    'бульдог': ['Сангвинник', 'Ассам', 'кино', 'силы', 'желтый'],
-    'пудель': ['Флегматик', 'Улун', 'рисование', 'богатство', 'синий'],
-    'гончая': ['Холерик', 'Фруктовый', 'спорт', 'бессмертие', 'красный'],
-    'бобтейл': ['Меланхолик', 'Нет', 'книги', 'любовь', 'зеленый']
+    'бульдог': ['Сангвинник', 'Ассам', 'Кино', 'Силы', 'Желтый'],
+    'пудель': ['Флегматик', 'Улун', 'Рисование', 'Богатство', 'Синий'],
+    'гончая': ['Холерик', 'Фруктовый', 'Спорт', 'Бессмертие', 'Красный'],
+    'бобтейл': ['Меланхолик', 'Нет', 'Книги', 'Любовь', 'Зеленый']
 }
 
 dog_results = {
@@ -41,7 +41,26 @@ dog_results = {
     'бобтейл': 0
 }
 
+last_dog = ''
+
+dog_ins = [0, 0, 0, 0, 0]
+
 dog_spisok = []
+
+last_temp = ''
+last_temp_num = ''
+
+last_tea = ''
+last_tea_num = ''
+
+last_hobbie = ''
+last_hobbie_num = ''
+
+last_power = ''
+last_power_num = ''
+
+last_color = ''
+last_color_num = ''
 
 
 @app.route("/")
@@ -80,22 +99,165 @@ def load_user(user_id):
 
 @app.route("/dog_test_1", methods=['POST', 'GET'])
 def dog_1():
-    global dog_spisok, dog, dog_results, result
-
+    global dog_spisok, dog, dog_results, result, last_temp, dog_ins, last_temp, last_temp_num
+    dog_ins[0] += 1
     if request.method == 'POST':
 
         result = request.form.get('temperament')
 
         for key in dog:
-            if key[0] == result:
+            if dog[key][0] == result:
+                if dog_ins[0] > 2:
+                    dog_spisok.remove(last_temp)
+                    dog_results[last_temp_num] -= 1
                 dog_results[key] += 1
+                last_temp_num = key
                 dog_spisok.append(result)
-        return redirect("/")
+                last_temp = result
+        return redirect("/dog_test_2")
     else:
 
-        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result)
+        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+                               title='Какой у вас темперамент?', first='Холерик',
+                               second='Флегматик', third='Сангвинник', fourth='Меланхолик', source='/dog_test_1',
+                               id_1='Holeric', id_2='Flegmatic', id_3='Sangvinnic', id_4='Melanholic',
+                               value_1='Холерик',
+                               value_2='Флегматик', value_3='Сангвинник', value_4='Меланхолик', name='temperament',
+                               spisok=dog_spisok, message='Дальше')
 
 
+@app.route("/dog_test_2", methods=['POST', 'GET'])
+def dog_2():
+    global dog_spisok, dog, dog_results, result, dog_ins, last_tea, last_tea_num
+    dog_ins[1] += 1
+
+    if request.method == 'POST':
+
+        result = request.form.get('tea')
+
+        for key in dog:
+            if dog[key][1] == result:
+                if dog_ins[1] > 2:
+                    dog_spisok.remove(last_tea)
+                    dog_results[last_tea_num] -= 1
+                dog_results[key] += 1
+                last_tea_num = key
+                dog_spisok.append(result)
+                last_tea = result
+        return redirect("/dog_test_3")
+    else:
+
+        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+                               title='Ваш любимый чай?', first='Я не пью чай',
+                               second='Черный чай Ассам', third='Зеленый чай Молочный Улун',
+                               fourth='Черный фруктовый чай', source='/dog_test_2',
+                               id_1='Not', id_2='Assam', id_3='Ulun', id_4='Fruit',
+                               value_1='Нет',
+                               value_2='Ассам', value_3='Улун', value_4='Фруктовый', name='tea', spisok=dog_spisok,
+                               message='Дальше')
+
+
+@app.route("/dog_test_3", methods=['POST', 'GET'])
+def dog_3():
+    global dog_spisok, dog, dog_results, result, dog_ins, last_hobbie, last_hobbie_num
+    dog_ins[2] += 1
+
+    if request.method == 'POST':
+
+        result = request.form.get('hobbie')
+
+        for key in dog:
+            if dog[key][2] == result:
+                if dog_ins[2] > 2:
+                    dog_spisok.remove(last_hobbie)
+                    dog_results[last_hobbie_num] -= 1
+                dog_results[key] += 1
+                last_hobbie_num = key
+                dog_spisok.append(result)
+                last_hobbie = result
+        return redirect("/dog_test_4")
+    else:
+
+        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+                               title='Чем вы предпочли бы заняться?', first='Просмотром фильма или сериала',
+                               second='Рисованием', third='Чтением книги', fourth='Спортом', source='/dog_test_3',
+                               id_1='Film', id_2='Draw', id_3='Book', id_4='Sport',
+                               value_1='Кино',
+                               value_2='Рисование', value_3='Книги', value_4='Спорт', name='hobbie', spisok=dog_spisok,
+                               message='Дальше')
+
+
+@app.route("/dog_test_4", methods=['POST', 'GET'])
+def dog_4():
+    global dog_spisok, dog, dog_results, result, dog_ins, last_power, last_power_num
+    dog_ins[3] += 1
+
+    if request.method == 'POST':
+
+        result = request.form.get('wish')
+
+        for key in dog:
+            if dog[key][3] == result:
+                if dog_ins[3] > 2:
+                    dog_spisok.remove(last_power)
+                    dog_results[last_power_num] -= 1
+                dog_results[key] += 1
+                last_power_num = key
+                dog_spisok.append(result)
+                last_power = result
+
+        return redirect("/dog_test_5")
+    else:
+
+        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+                               title='Что бы вы выбрали?', first='Богатство',
+                               second='Любовь', third='Сверхъестественные силы', fourth='Бессмертие',
+                               source='/dog_test_4',
+                               id_1='Money', id_2='Love', id_3='Powers', id_4='Deathless',
+                               value_1='Богатство',
+                               value_2='Любовь', value_3='Силы', value_4='Бессмертие', name='wish', spisok=dog_spisok,
+                               message='Дальше')
+
+
+@app.route("/dog_test_5", methods=['POST', 'GET'])
+def dog_5():
+    global dog_spisok, dog, dog_results, result, dog_ins, last_color, last_color_num
+    dog_ins[4] += 1
+
+    if request.method == 'POST':
+
+        result = request.form.get('color')
+
+        for key in dog:
+            if dog[key][4] == result:
+                if dog_ins[4] > 2:
+                    dog_spisok.remove(last_color)
+                    dog_results[last_color_num] -= 1
+                dog_results[key] += 1
+                last_color_num = key
+                dog_spisok.append(result)
+                last_color = result
+
+        return redirect("/dog_test_5")
+    else:
+
+        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+                               title='Ваш любимый цвет?', first='Синий',
+                               second='Желтый', third='Зеленый', fourth='Красный', source='/dog_test_5',
+                               id_1='Blue', id_2='Yellow', id_3='Green', id_4='Red',
+                               value_1='Синий',
+                               value_2='Желтый', value_3='Зеленый', value_4='Красный', name='color', spisok=dog_spisok,
+                               message='Завершить')
+
+
+@app.route("/dog_results", )
+def result_dog():
+    global dog_spisok, dog, dog_results, result
+
+    maximum = 0
+    for key in dog_results:
+        if dog_results[key] > maximum:
+            maximum = dog_results[key]
 
 
 @app.route('/register', methods=['GET', 'POST'])

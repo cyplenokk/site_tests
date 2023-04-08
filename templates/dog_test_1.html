@@ -43,28 +43,28 @@
         <br>
         <img src="static/img/dog1.jpeg" class="img" alt="...">
 
-        <h3>Какой ваш темперамент?</h3> <br>
+        <h3>{{title}}</h3> <br>
 
-        <form name="temperament" action="/dog_test_1" method="post" onsubmit="">
-            <input class="form-check-input" type="radio" name="temperament" id="Holeric" value="Холерик">
-            <label class="form-check-label" for="Holeric">
-                Холерик
+        <form name="temperament" action={{source}} method="post" onsubmit="">
+            <input class="form-check-input" type="radio" name={{name}} id={{id_1}} value={{value_1}}>
+            <label class="form-check-label" for={{id_1}}>
+                {{first}}
             </label> <br>
-            <input class="form-check-input" type="radio" name="temperament" id="Flegmatic" value="Флегматик" checked>
-            <label class="form-check-label" for="Flegmatic">
-                Флегматик
+            <input class="form-check-input" type="radio" name={{name}} id={{id_2}} value={{value_2}} checked>
+            <label class="form-check-label" for={{id_2}}>
+                {{second}}
             </label> <br>
-            <input class="form-check-input" type="radio" name="temperament" id="Sangvinnic" value="Сангвинник" checked>
-            <label class="form-check-label" for="Sangvinnic">
-                Сангвинник
+            <input class="form-check-input" type="radio" name={{name}} id={{id_3}} value={{value_3}} checked>
+            <label class="form-check-label" for={{id_3}}>
+                {{third}}
             </label> <br>
-            <input class="form-check-input" type="radio" name="temperament" id="Melanholic" value="Меланхолик" checked>
-            <label class="form-check-label" for="Melanholic">
-                Меланхолик
+            <input class="form-check-input" type="radio" name={{name}} id={{id_4}} value={{value_4}} checked>
+            <label class="form-check-label" for={{id_4}}>
+                {{fourth}}
             </label> <br>
-            <input type=submit value=Дальше>
+            <input type=submit value={{ message }} >
         </form>
-        <p>{{ result }}</p>
+        <p>{{ spisok }}</p>
     </div>
 </div>
 
