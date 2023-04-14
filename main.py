@@ -53,7 +53,6 @@ dog_results = {
     'бобтейл': 0
 }
 
-
 drink = {
     'кофе': ['Волнение', 'Дождь', 'Осень', 'Детектив', 'Заранее'],
     'сок': ['Жизнерадостный', 'Солнце', 'Лето', 'Роман', 'Ничего'],
@@ -95,7 +94,6 @@ last_power_num = ''
 last_man = ''
 last_man_num = ''
 
-
 last_drink = ''
 drink_ins = [0, 0, 0, 0, 0]
 drink_spisok = []
@@ -130,10 +128,20 @@ def index():
 def search():
     global if_auto, user_name, titles, searching
 
-    searching = request.args['title'].lower()
+    searching = request.args['title'].lower().split()
+
+    ready = []
+
+    for title in titles:
+        for i in searching:
+            count = 0
+            if i in title:
+                count += 1
+        if count == len(i.split()):
+            ready.append(title)
 
     if not if_auto:
-        return render_template("search_index.html", titles=titles, request=searching, if_auto=if_auto, user=user_name)
+        return render_template("search_index.html", titles=titles, request=ready, if_auto=if_auto, user=user_name)
 
     else:
         return render_template("search_index.html", if_auto=if_auto, user=user_name, titles=titles, request=searching)
@@ -170,7 +178,8 @@ def dog_1():
         return redirect("/dog_test_2")
     else:
 
-        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Какой у вас темперамент?', first='Холерик',
                                second='Флегматик', third='Сангвинник', fourth='Меланхолик', source='/dog_test_1',
                                id_1='Holeric', id_2='Flegmatic', id_3='Sangvinnic', id_4='Melanholic',
@@ -200,7 +209,8 @@ def dog_2():
         return redirect("/dog_test_3")
     else:
 
-        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Ваш любимый чай?', first='Я не пью чай',
                                second='Черный чай Ассам', third='Зеленый чай Молочный Улун',
                                fourth='Черный фруктовый чай', source='/dog_test_2',
@@ -231,7 +241,8 @@ def dog_3():
         return redirect("/dog_test_4")
     else:
 
-        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Чем вы предпочли бы заняться?', first='Просмотром фильма или сериала',
                                second='Рисованием', third='Чтением книги', fourth='Спортом', source='/dog_test_3',
                                id_1='Film', id_2='Draw', id_3='Book', id_4='Sport',
@@ -262,7 +273,8 @@ def dog_4():
         return redirect("/dog_test_5")
     else:
 
-        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Что бы вы выбрали?', first='Богатство',
                                second='Любовь', third='Сверхъестественные силы', fourth='Бессмертие',
                                source='/dog_test_4',
@@ -294,7 +306,8 @@ def dog_5():
         return redirect("/dog_results")
     else:
 
-        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Ваш любимый цвет?', first='Синий',
                                second='Желтый', third='Зеленый', fourth='Красный', source='/dog_test_5',
                                id_1='Blue', id_2='Yellow', id_3='Green', id_4='Red',
@@ -342,7 +355,6 @@ def result_dog():
     return render_template("result_dog.html", head='Какая вы собака?', title=result, spis=dog_spisok)
 
 
-
 @app.route("/drink_test_1", methods=['POST', 'GET'])
 def drink_1():
     global drink_spisok, drink, drink_results, result, last_char, drink_ins, last_char_num
@@ -363,9 +375,11 @@ def drink_1():
         return redirect("/drink_test_2")
     else:
 
-        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Как бы вы охарактеризовали себя?', first='Я жизнерадостный человек',
-                               second='Я задумчивый человек', third='Я мечтательный человек', fourth='Я много волнуюсь о различных вещах', source='/drink_test_1',
+                               second='Я задумчивый человек', third='Я мечтательный человек',
+                               fourth='Я много волнуюсь о различных вещах', source='/drink_test_1',
                                id_1='Happy', id_2='Think', id_3='Dream', id_4='Care',
                                value_1='Жизнерадостный',
                                value_2='Задумчивый', value_3='Мечтательный', value_4='Волнение', name='character',
@@ -393,7 +407,8 @@ def drink_2():
         return redirect("/drink_test_3")
     else:
 
-        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Ваша любимая погода?', first='Дождливая',
                                second='Солнечная', third='Облачная',
                                fourth='Снежная', source='/drink_test_2',
@@ -424,7 +439,8 @@ def drink_3():
         return redirect("/drink_test_4")
     else:
 
-        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Ваше любимое время года?', first='Зима',
                                second='Лето', third='Осень', fourth='Весна', source='/drink_test_3',
                                id_1='Winter', id_2='Summer', id_3='Autumn', id_4='Spring',
@@ -455,13 +471,15 @@ def drink_4():
         return redirect("/drink_test_5")
     else:
 
-        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Какой жанр книг вы бы предпочли?', first='Детектив',
                                second='Фантастика', third='Роман', fourth='Фэнтези',
                                source='/drink_test_4',
                                id_1='Детектив', id_2='Fantastic', id_3='Roman', id_4='Fantasy',
                                value_1='Богатство',
-                               value_2='Фантастика', value_3='Роман', value_4='Фэнтези', name='genre', spisok=drink_spisok,
+                               value_2='Фантастика', value_3='Роман', value_4='Фэнтези', name='genre',
+                               spisok=drink_spisok,
                                message='Дальше', progress='60%', count=drink_ins)
 
 
@@ -487,12 +505,15 @@ def drink_5():
         return redirect("/drink_results")
     else:
 
-        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name,
+                               result=result,
                                title='Насколько вы организованны?', first='Я умею распределять свое время',
-                               second='Я часто прокрастинирую и откладываю на потом', third='Я делаю все заранее', fourth='Я часто ленюсь и ничего не делаю', source='/drink_test_5',
+                               second='Я часто прокрастинирую и откладываю на потом', third='Я делаю все заранее',
+                               fourth='Я часто ленюсь и ничего не делаю', source='/drink_test_5',
                                id_1='Blue', id_2='Yellow', id_3='Green', id_4='Red',
                                value_1='Умею',
-                               value_2='Прокрастинирую', value_3='Заранее', value_4='Ничего', name='manage', spisok=drink_spisok,
+                               value_2='Прокрастинирую', value_3='Заранее', value_4='Ничего', name='manage',
+                               spisok=drink_spisok,
                                message='Завершить', progress='80%', count=drink_ins)
 
 
@@ -533,9 +554,6 @@ def result_drink():
     db_sess.commit()
 
     return render_template("result_dog.html", head='Какой вы напиток?', title=result, spis=drink_spisok)
-
-
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
