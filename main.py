@@ -8,6 +8,7 @@ from data import db_session
 from flask import Flask, render_template, redirect
 from data.users import User
 from data.results_dog import Results_Dog
+from data.results_drink import Results_Drink
 from data.results import Results
 from data.reqq import Requests
 
@@ -40,7 +41,7 @@ dog = {
 dog_inv = {
     '1': ['Сангвинник', 'Флегматик', 'Холерик', 'Меланхолик'],
     '2': ['Улун', 'Ассам', 'Фруктовый', 'Нет'],
-    '3': ['Кино', 'Рисование', 'Спорт', 'Книги', 'Бессмертие'],
+    '3': ['Кино', 'Рисование', 'Спорт', 'Книги'],
     '4': ['Силы', 'Богатство', 'Любовь', 'Бессмертие'],
     '5': ['Желтый', 'Синий', 'Красный', 'Зеленый']
 }
@@ -52,10 +53,31 @@ dog_results = {
     'бобтейл': 0
 }
 
-last_dog = ''
 
+drink = {
+    'кофе': ['Волнение', 'Дождь', 'Осень', 'Детектив', 'Заранее'],
+    'сок': ['Жизнерадостный', 'Солнце', 'Лето', 'Роман', 'Ничего'],
+    'молочный коктейль': ['Мечтательный', 'Снег', 'Зима', 'Фэнтези', 'Когда как'],
+    'чай': ['Задумчивый', 'Облачно', 'Весна', 'Фантастика', 'Прокрастинирую']
+}
+
+drink_inv = {
+    '1': ['Волнение', 'Жизнерадостный', 'Мечтательный', 'Задумчивый'],
+    '2': ['Дождь', 'Солнце', 'Снег', 'Облачно'],
+    '3': ['Осень', 'Лето', 'Зима', 'Весна'],
+    '4': ['Детектив', 'Роман', 'Фэнтези', 'Фантастика'],
+    '5': ['Заранее', 'Ничего', 'Умею', 'Прокрастинирую']
+}
+
+drink_results = {
+    'кофе': 0,
+    'сок': 0,
+    'молочный коктейль': 0,
+    'чай': 0
+}
+
+last_drink = ''
 dog_ins = [0, 0, 0, 0, 0]
-
 dog_spisok = []
 
 last_temp = ''
@@ -69,6 +91,26 @@ last_hobbie_num = ''
 
 last_power = ''
 last_power_num = ''
+
+last_man = ''
+last_man_num = ''
+
+
+last_drink = ''
+drink_ins = [0, 0, 0, 0, 0]
+drink_spisok = []
+
+last_char = ''
+last_char_num = ''
+
+last_wea = ''
+last_wea_num = ''
+
+last_time = ''
+last_time_num = ''
+
+last_genre = ''
+last_genre_num = ''
 
 last_color = ''
 last_color_num = ''
@@ -128,7 +170,7 @@ def dog_1():
         return redirect("/dog_test_2")
     else:
 
-        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
                                title='Какой у вас темперамент?', first='Холерик',
                                second='Флегматик', third='Сангвинник', fourth='Меланхолик', source='/dog_test_1',
                                id_1='Holeric', id_2='Flegmatic', id_3='Sangvinnic', id_4='Melanholic',
@@ -158,7 +200,7 @@ def dog_2():
         return redirect("/dog_test_3")
     else:
 
-        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
                                title='Ваш любимый чай?', first='Я не пью чай',
                                second='Черный чай Ассам', third='Зеленый чай Молочный Улун',
                                fourth='Черный фруктовый чай', source='/dog_test_2',
@@ -189,7 +231,7 @@ def dog_3():
         return redirect("/dog_test_4")
     else:
 
-        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
                                title='Чем вы предпочли бы заняться?', first='Просмотром фильма или сериала',
                                second='Рисованием', third='Чтением книги', fourth='Спортом', source='/dog_test_3',
                                id_1='Film', id_2='Draw', id_3='Book', id_4='Sport',
@@ -220,7 +262,7 @@ def dog_4():
         return redirect("/dog_test_5")
     else:
 
-        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
                                title='Что бы вы выбрали?', first='Богатство',
                                second='Любовь', third='Сверхъестественные силы', fourth='Бессмертие',
                                source='/dog_test_4',
@@ -252,7 +294,7 @@ def dog_5():
         return redirect("/dog_results")
     else:
 
-        return render_template("dog_test_1.html", if_auto=if_auto, user=user_name, result=result,
+        return render_template("dog_test_1.html", head='Какая вы собака?', if_auto=if_auto, user=user_name, result=result,
                                title='Ваш любимый цвет?', first='Синий',
                                second='Желтый', third='Зеленый', fourth='Красный', source='/dog_test_5',
                                id_1='Blue', id_2='Yellow', id_3='Green', id_4='Red',
@@ -297,7 +339,203 @@ def result_dog():
     db_sess.add(ress)
     db_sess.commit()
 
-    return render_template("result.html", title=result, spis=dog_spisok)
+    return render_template("result_dog.html", head='Какая вы собака?', title=result, spis=dog_spisok)
+
+
+
+@app.route("/drink_test_1", methods=['POST', 'GET'])
+def drink_1():
+    global drink_spisok, drink, drink_results, result, last_char, drink_ins, last_char_num
+    if request.method == 'POST':
+
+        result = request.form.get('character')
+
+        for key in drink:
+            if drink[key][0] == result:
+                drink_ins[0] += 1
+                if drink_ins[0] > 1:
+                    drink_spisok.remove(last_char)
+                    drink_results[last_char_num] -= 1
+                drink_results[key] += 1
+                last_char_num = key
+                drink_spisok.append(result)
+                last_char = result
+        return redirect("/drink_test_2")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+                               title='Как бы вы охарактеризовали себя?', first='Я жизнерадостный человек',
+                               second='Я задумчивый человек', third='Я мечтательный человек', fourth='Я много волнуюсь о различных вещах', source='/drink_test_1',
+                               id_1='Happy', id_2='Think', id_3='Dream', id_4='Care',
+                               value_1='Жизнерадостный',
+                               value_2='Задумчивый', value_3='Мечтательный', value_4='Волнение', name='character',
+                               spisok=drink_spisok, message='Дальше', progress='0%', count=drink_ins)
+
+
+@app.route("/drink_test_2", methods=['POST', 'GET'])
+def drink_2():
+    global drink_spisok, drink, drink_results, result, drink_ins, last_wea, last_wea_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('weather')
+
+        for key in drink:
+            if drink[key][1] == result:
+                drink_ins[1] += 1
+                if drink_ins[1] > 1:
+                    drink_spisok.remove(last_wea)
+                    drink_results[last_wea_num] -= 1
+                drink_results[key] += 1
+                last_wea_num = key
+                drink_spisok.append(result)
+                last_wea = result
+        return redirect("/drink_test_3")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+                               title='Ваша любимая погода?', first='Дождливая',
+                               second='Солнечная', third='Облачная',
+                               fourth='Снежная', source='/drink_test_2',
+                               id_1='Rainy', id_2='Sunny', id_3='Cloudy', id_4='Snow',
+                               value_1='Дождь',
+                               value_2='Солнце', value_3='Облачно', value_4='Снег', name='weather', spisok=drink_spisok,
+                               message='Дальше', progress='20%', count=drink_ins)
+
+
+@app.route("/drink_test_3", methods=['POST', 'GET'])
+def drink_3():
+    global drink_spisok, drink, drink_results, result, drink_ins, last_time, last_time_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('time')
+
+        for key in drink:
+            if drink[key][2] == result:
+                drink_ins[2] += 1
+                if drink_ins[2] > 1:
+                    drink_spisok.remove(last_time)
+                    drink_results[last_time_num] -= 1
+                drink_results[key] += 1
+                last_time_num = key
+                drink_spisok.append(result)
+                last_time = result
+        return redirect("/drink_test_4")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+                               title='Ваше любимое время года?', first='Зима',
+                               second='Лето', third='Осень', fourth='Весна', source='/drink_test_3',
+                               id_1='Winter', id_2='Summer', id_3='Autumn', id_4='Spring',
+                               value_1='Зима',
+                               value_2='Лето', value_3='Осень', value_4='Весна', name='time', spisok=drink_spisok,
+                               message='Дальше', progress='40%', count=drink_ins)
+
+
+@app.route("/drink_test_4", methods=['POST', 'GET'])
+def drink_4():
+    global drink_spisok, drink, drink_results, result, drink_ins, last_genre, last_genre_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('genre')
+
+        for key in drink:
+            if drink[key][3] == result:
+                drink_ins[3] += 1
+                if drink_ins[3] > 1:
+                    drink_spisok.remove(last_genre)
+                    drink_results[last_genre_num] -= 1
+                drink_results[key] += 1
+                last_genre_num = key
+                drink_spisok.append(result)
+                last_genre = result
+
+        return redirect("/drink_test_5")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+                               title='Какой жанр книг вы бы предпочли?', first='Детектив',
+                               second='Фантастика', third='Роман', fourth='Фэнтези',
+                               source='/drink_test_4',
+                               id_1='Детектив', id_2='Fantastic', id_3='Roman', id_4='Fantasy',
+                               value_1='Богатство',
+                               value_2='Фантастика', value_3='Роман', value_4='Фэнтези', name='genre', spisok=drink_spisok,
+                               message='Дальше', progress='60%', count=drink_ins)
+
+
+@app.route("/drink_test_5", methods=['POST', 'GET'])
+def drink_5():
+    global drink_spisok, drink, drink_results, result, drink_ins, last_man, last_man_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('manage')
+
+        for key in drink:
+            if drink[key][4] == result:
+                drink_ins[4] += 1
+                if drink_ins[4] > 1:
+                    drink_spisok.remove(last_man)
+                    drink_results[last_man_num] -= 1
+                drink_results[key] += 1
+                last_man_num = key
+                drink_spisok.append(result)
+                last_man = result
+
+        return redirect("/drink_results")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы напиток?', if_auto=if_auto, user=user_name, result=result,
+                               title='Насколько вы организованны?', first='Я умею распределять свое время',
+                               second='Я часто прокрастинирую и откладываю на потом', third='Я делаю все заранее', fourth='Я часто ленюсь и ничего не делаю', source='/drink_test_5',
+                               id_1='Blue', id_2='Yellow', id_3='Green', id_4='Red',
+                               value_1='Умею',
+                               value_2='Прокрастинирую', value_3='Заранее', value_4='Ничего', name='manage', spisok=drink_spisok,
+                               message='Завершить', progress='80%', count=drink_ins)
+
+
+@app.route("/drink_results", )
+def result_drink():
+    global drink_spisok, drink, drink_results, result, user_id, drink_inv
+
+    maximum = 0
+    for key in drink_results:
+        if drink_results[key] > maximum:
+            maximum = drink_results[key]
+            result = key
+
+    new_spisok = []
+    for key in drink_inv:
+        for item in drink_spisok:
+            if item in drink_inv[key] and item not in new_spisok:
+                new_spisok.append(item)
+
+    db_sess = db_session.create_session()
+    res = Results_Drink(
+        drink_1=sorted(drink_spisok)[0],
+        drink_2=sorted(drink_spisok)[1],
+        drink_3=sorted(drink_spisok)[2],
+        drink_4=sorted(drink_spisok)[3],
+        drink_5=sorted(drink_spisok)[4],
+        user_id=user_id
+    )
+    db_sess.add(res)
+    db_sess.commit()
+
+    db_sess = db_session.create_session()
+    ress = Results(
+        drink=result,
+        user_id=user_id
+    )
+    db_sess.add(ress)
+    db_sess.commit()
+
+    return render_template("result_dog.html", head='Какой вы напиток?', title=result, spis=drink_spisok)
+
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])

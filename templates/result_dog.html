@@ -1,0 +1,87 @@
+{% extends "log_base.html" %}
+
+{% block content %}
+
+<style>
+
+  .card {
+    align: center;
+    height: 1000px;
+    width: 1200px;
+  }
+  .img {
+    object-fit: cover;
+    width: 600px;
+    height: 400px;
+    display: block;
+    text-align: center;
+    position: relative;
+    top: -430px;
+  }
+  .progress {
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: cover;
+    width: 800px;
+    height: 10px;
+  }
+  .title {
+    text-align: center;
+  }
+  .title-1 {
+    text-align: center;
+    position: relative;
+    top: -420px;
+  }
+
+
+
+
+
+</style>
+
+<br><h1 class="header_site">{{head}}</h1><br>
+<br>
+
+<div class="card mx-auto p-2">
+    <div class="card-body">
+        <h2 class="title">Результаты</h2>
+    </div>
+    {% if title == 'бульдог' %}
+    <center>
+        <img src="static/img/buldog.jpg" class="img" alt="...">
+    </center>
+    {% elif title == 'пудель' %}
+    <center>
+        <img src="static/img/pudel.jpg" class="img" alt="...">
+    </center>
+    {% elif title == 'бобтейл' %}
+    <img src="static/img/bobtale.jpg" class="img" alt="...">
+    {% elif title == 'гончая' %}
+    <center>
+        <img src="static/img/runner.jpg" class="img" alt="...">
+    </center>
+
+    {% elif title == 'молочный коктейль' %}
+    <center>
+        <img src="static/img/milkshake.jpg" class="img" alt="...">
+    </center>
+    {% elif title == 'чай' %}
+    <center>
+        <img src="static/img/tea.jpg" class="img" alt="...">
+    </center>
+    {% elif title == 'сок' %}
+    <img src="static/img/juice.jpg" class="img" alt="...">
+    {% elif title == 'кофе' %}
+    <center>
+        <img src="static/img/coffee.jpg" class="img" alt="...">
+    </center>
+
+    {% endif %}
+    <h4 class="title-1">Вы {{title}}!</h4>
+    <h4 class="title-1">{{spis}}</h4>
+</div>
+</div>
+
+
+{% endblock %}
