@@ -28,7 +28,7 @@ result = ''
 
 user_id = 0
 
-titles = ["тест 'какая ты собака?'", "тест 'какой ты напиток?'", "тест 'какая ты кошка/кот?'",
+titles = ["тест 'какая ты собака?'", "тест 'какой ты напиток?'", "тест 'какая/ой ты кошка/кот?'",
           "тест 'какая ты шиншилла?'"]
 
 dog = {
@@ -185,7 +185,7 @@ def dog_1():
                                id_1='Holeric', id_2='Flegmatic', id_3='Sangvinnic', id_4='Melanholic',
                                value_1='Холерик',
                                value_2='Флегматик', value_3='Сангвинник', value_4='Меланхолик', name='temperament',
-                               spisok=dog_spisok, message='Дальше', progress='0%', count=dog_ins)
+                               spisok=dog_spisok, message='Дальше', progress='0%', count=dog_ins, picture='static/img/dog_1.jpg')
 
 
 @app.route("/dog_test_2", methods=['POST', 'GET'])
@@ -217,7 +217,7 @@ def dog_2():
                                id_1='Not', id_2='Assam', id_3='Ulun', id_4='Fruit',
                                value_1='Нет',
                                value_2='Ассам', value_3='Улун', value_4='Фруктовый', name='tea', spisok=dog_spisok,
-                               message='Дальше', progress='20%', count=dog_ins)
+                               message='Дальше', progress='20%', count=dog_ins, picture='static/img/dog_2.jpg')
 
 
 @app.route("/dog_test_3", methods=['POST', 'GET'])
@@ -248,7 +248,7 @@ def dog_3():
                                id_1='Film', id_2='Draw', id_3='Book', id_4='Sport',
                                value_1='Кино',
                                value_2='Рисование', value_3='Книги', value_4='Спорт', name='hobbie', spisok=dog_spisok,
-                               message='Дальше', progress='40%', count=dog_ins)
+                               message='Дальше', progress='40%', count=dog_ins, picture='static/img/dog_3.jpeg')
 
 
 @app.route("/dog_test_4", methods=['POST', 'GET'])
@@ -281,7 +281,7 @@ def dog_4():
                                id_1='Money', id_2='Love', id_3='Powers', id_4='Deathless',
                                value_1='Богатство',
                                value_2='Любовь', value_3='Силы', value_4='Бессмертие', name='wish', spisok=dog_spisok,
-                               message='Дальше', progress='60%', count=dog_ins)
+                               message='Дальше', progress='60%', count=dog_ins, picture='static/img/dog_4.webp')
 
 
 @app.route("/dog_test_5", methods=['POST', 'GET'])
@@ -313,7 +313,7 @@ def dog_5():
                                id_1='Blue', id_2='Yellow', id_3='Green', id_4='Red',
                                value_1='Синий',
                                value_2='Желтый', value_3='Зеленый', value_4='Красный', name='color', spisok=dog_spisok,
-                               message='Завершить', progress='80%', count=dog_ins)
+                               message='Завершить', progress='80%', count=dog_ins, picture='static/img/dog_5.jfif')
 
 
 @app.route("/dog_results", )
@@ -383,7 +383,7 @@ def drink_1():
                                id_1='Happy', id_2='Think', id_3='Dream', id_4='Care',
                                value_1='Жизнерадостный',
                                value_2='Задумчивый', value_3='Мечтательный', value_4='Волнение', name='character',
-                               spisok=drink_spisok, message='Дальше', progress='0%', count=drink_ins)
+                               spisok=drink_spisok, message='Дальше', progress='0%', count=drink_ins, picture='static/img/drink_1.jpg')
 
 
 @app.route("/drink_test_2", methods=['POST', 'GET'])
@@ -415,7 +415,7 @@ def drink_2():
                                id_1='Rainy', id_2='Sunny', id_3='Cloudy', id_4='Snow',
                                value_1='Дождь',
                                value_2='Солнце', value_3='Облачно', value_4='Снег', name='weather', spisok=drink_spisok,
-                               message='Дальше', progress='20%', count=drink_ins)
+                               message='Дальше', progress='20%', count=drink_ins, picture='static/img/drink_2.jpg')
 
 
 @app.route("/drink_test_3", methods=['POST', 'GET'])
@@ -446,7 +446,7 @@ def drink_3():
                                id_1='Winter', id_2='Summer', id_3='Autumn', id_4='Spring',
                                value_1='Зима',
                                value_2='Лето', value_3='Осень', value_4='Весна', name='time', spisok=drink_spisok,
-                               message='Дальше', progress='40%', count=drink_ins)
+                               message='Дальше', progress='40%', count=drink_ins, picture='static/img/drink_3.jpg')
 
 
 @app.route("/drink_test_4", methods=['POST', 'GET'])
@@ -480,7 +480,7 @@ def drink_4():
                                value_1='Богатство',
                                value_2='Фантастика', value_3='Роман', value_4='Фэнтези', name='genre',
                                spisok=drink_spisok,
-                               message='Дальше', progress='60%', count=drink_ins)
+                               message='Дальше', progress='60%', count=drink_ins, picture='static/img/drink_4.jpg')
 
 
 @app.route("/drink_test_5", methods=['POST', 'GET'])
@@ -514,7 +514,7 @@ def drink_5():
                                value_1='Умею',
                                value_2='Прокрастинирую', value_3='Заранее', value_4='Ничего', name='manage',
                                spisok=drink_spisok,
-                               message='Завершить', progress='80%', count=drink_ins)
+                               message='Завершить', progress='80%', count=drink_ins, picture='static/img/drink_5.webp')
 
 
 @app.route("/drink_results", )
