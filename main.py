@@ -1,8 +1,13 @@
+import sqlite3
+
 from flask import Flask, render_template, request
 from werkzeug.utils import redirect
 
 from data import db_session
 from data.users import User
+
+from werkzeug.utils import redirect
+import matplotlib.pyplot as plt
 
 from data import db_session
 from flask import Flask, render_template, redirect
@@ -28,8 +33,8 @@ result = ''
 
 user_id = 0
 
-titles = ["тест 'какая ты собака?'", "тест 'какой ты напиток?'", "тест 'какая/ой ты кошка/кот?'",
-          "тест 'какая ты шиншилла?'"]
+titles = ["тест 'какая/ой ты собака?'", "тест 'какой/ая ты напиток?'", "тест 'какая/ой ты кошка/кот?'",
+          "тест 'какая/ой ты шиншилла?'"]
 
 dog = {
     'бульдог': ['Сангвинник', 'Ассам', 'Кино', 'Силы', 'Желтый'],
@@ -185,7 +190,8 @@ def dog_1():
                                id_1='Holeric', id_2='Flegmatic', id_3='Sangvinnic', id_4='Melanholic',
                                value_1='Холерик',
                                value_2='Флегматик', value_3='Сангвинник', value_4='Меланхолик', name='temperament',
-                               spisok=dog_spisok, message='Дальше', progress='0%', count=dog_ins, picture='static/img/dog_1.jpg')
+                               spisok=dog_spisok, message='Дальше', progress='0%', count=dog_ins,
+                               picture='static/img/dog_1.jpg')
 
 
 @app.route("/dog_test_2", methods=['POST', 'GET'])
@@ -334,11 +340,11 @@ def result_dog():
 
     db_sess = db_session.create_session()
     res = Results_Dog(
-        dog_1=sorted(dog_spisok)[0],
-        dog_2=sorted(dog_spisok)[1],
-        dog_3=sorted(dog_spisok)[2],
-        dog_4=sorted(dog_spisok)[3],
-        dog_5=sorted(dog_spisok)[4],
+        dog_1=dog_spisok[0],
+        dog_2=dog_spisok[1],
+        dog_3=dog_spisok[2],
+        dog_4=dog_spisok[3],
+        dog_5=dog_spisok[4],
         user_id=user_id
     )
     db_sess.add(res)
@@ -352,7 +358,7 @@ def result_dog():
     db_sess.add(ress)
     db_sess.commit()
 
-    return render_template("result_dog.html", head='Какая вы собака?', title=result, spis=dog_spisok)
+    return render_template("result_dog.html", title=result, spis=dog_spisok)
 
 
 @app.route("/drink_test_1", methods=['POST', 'GET'])
@@ -383,7 +389,8 @@ def drink_1():
                                id_1='Happy', id_2='Think', id_3='Dream', id_4='Care',
                                value_1='Жизнерадостный',
                                value_2='Задумчивый', value_3='Мечтательный', value_4='Волнение', name='character',
-                               spisok=drink_spisok, message='Дальше', progress='0%', count=drink_ins, picture='static/img/drink_1.jpg')
+                               spisok=drink_spisok, message='Дальше', progress='0%', count=drink_ins,
+                               picture='static/img/drink_1.jpg')
 
 
 @app.route("/drink_test_2", methods=['POST', 'GET'])
@@ -535,11 +542,11 @@ def result_drink():
 
     db_sess = db_session.create_session()
     res = Results_Drink(
-        drink_1=sorted(drink_spisok)[0],
-        drink_2=sorted(drink_spisok)[1],
-        drink_3=sorted(drink_spisok)[2],
-        drink_4=sorted(drink_spisok)[3],
-        drink_5=sorted(drink_spisok)[4],
+        drink_1=(drink_spisok)[0],
+        drink_2=(drink_spisok)[1],
+        drink_3=(drink_spisok)[2],
+        drink_4=(drink_spisok)[3],
+        drink_5=(drink_spisok)[4],
         user_id=user_id
     )
     db_sess.add(res)
@@ -618,6 +625,182 @@ def logout():
 def person():
     form = RequestsForm()
     return render_template("personal.html", user=user_name, if_auto=if_auto, email=user_email, form=form)
+
+
+def main_dog_diagram():
+    con = sqlite3.connect("db/tests.db")
+    cur = con.cursor()
+    result_dog1 = cur.execute("""SELECT dog FROM results
+                        WHERE dog = ?""", ("бульдог",)).fetchall()
+    result_dog2 = cur.execute("""SELECT dog FROM results
+                WHERE dog = ?""", ("пудель",)).fetchall()
+    result_dog3 = cur.execute("""SELECT dog FROM results
+                    WHERE dog = ?""", ("гончая",)).fetchall()
+    result_dog4 = cur.execute("""SELECT dog FROM results
+                    WHERE dog = ?""", ("бобтейл",)).fetchall()
+    vals = [len(result_dog1), len(result_dog2), len(result_dog3), len(result_dog4)]
+    idx_remove = []
+    for el in vals:
+        if el == 0:
+            idx_remove.append(vals.index(el))
+            vals.remove(el)
+    labels = ["бульдог", "пудель", "гончая", "бобтейл"]
+    if idx_remove:
+        for el in idx_remove:
+            labels.remove(labels[el])
+    fig, ax = plt.subplots()
+    ax.pie(vals, labels=labels, autopct='%1.1f%%')
+    ax.axis("equal")
+    plt.savefig('static/main_dog_diagram.png')
+
+
+def info_dog_diagram1():
+    con = sqlite3.connect("db/tests.db")
+    cur = con.cursor()
+    values_dog1 = {'Сангвинник': 0,
+                   'Флегматик': 0,
+                   'Холерик': 0,
+                   'Меланхолик': 0}
+    result_dog1 = cur.execute("""SELECT dog_1 FROM Results_dog""").fetchall()
+    for el in result_dog1:
+        values_dog1[el[0]] += 1
+    vals1 = [values_dog1['Сангвинник'], values_dog1['Флегматик'], values_dog1['Холерик'], values_dog1['Меланхолик']]
+    idx_remove1 = []
+    for el in vals1:
+        if el == 0:
+            idx_remove1.append(vals1.index(el))
+            vals1.remove(el)
+    labels1 = ["Сангвинник", "Флегматик", "Холерик", "Меланхолик"]
+    if idx_remove1:
+        for el in idx_remove1:
+            labels1.remove(labels1[el])
+    fig1, ax1 = plt.subplots()
+    ax1.pie(vals1, labels=labels1, autopct='%1.1f%%')
+    ax1.axis("equal")
+    plt.savefig('static/info_dog_diagram1.png')
+
+
+def info_dog_diagram2():
+    con = sqlite3.connect("db/tests.db")
+    cur = con.cursor()
+    values_dog2 = {'Улун': 0,
+                   'Ассам': 0,
+                   'Фруктовый': 0,
+                   'Нет': 0}
+    result_dog2 = cur.execute("""SELECT dog_2 FROM Results_dog""").fetchall()
+    for el in result_dog2:
+        values_dog2[el[0]] += 1
+    vals2 = [values_dog2['Улун'], values_dog2['Ассам'], values_dog2['Фруктовый'], values_dog2['Нет']]
+    idx_remove2 = []
+    for el in vals2:
+        if el == 0:
+            idx_remove2.append(vals2.index(el))
+            vals2.remove(el)
+    labels2 = ["Улун", "Ассам", "Фруктовый", "Нет"]
+    if idx_remove2:
+        for el in idx_remove2:
+            labels2.remove(labels2[el])
+    fig2, ax2 = plt.subplots()
+    ax2.pie(vals2, labels=labels2, autopct='%1.1f%%')
+    ax2.axis("equal")
+    plt.savefig('static/info_dog_diagram2.png')
+
+
+def info_dog_diagram3():
+    con = sqlite3.connect("db/tests.db")
+    cur = con.cursor()
+    values_dog3 = {'Кино': 0,
+                   'Рисование': 0,
+                   'Спорт': 0,
+                   'Книги': 0}
+    result_dog3 = cur.execute("""SELECT dog_3 FROM Results_dog""").fetchall()
+    for el in result_dog3:
+        values_dog3[el[0]] += 1
+    vals3 = [values_dog3['Кино'], values_dog3['Рисование'], values_dog3['Спорт'], values_dog3['Книги']]
+    idx_remove3 = []
+    for el in vals3:
+        if el == 0:
+            idx_remove3.append(vals3.index(el))
+            vals3.remove(el)
+    labels3 = ["Кино", "Рисование", "Спорт", "Книги"]
+    if idx_remove3:
+        for el in idx_remove3:
+            labels3.remove(labels3[el])
+    fig3, ax3 = plt.subplots()
+    ax3.pie(vals3, labels=labels3, autopct='%1.1f%%')
+    ax3.axis("equal")
+    plt.savefig('static/info_dog_diagram3.png')
+
+
+def info_dog_diagram4():
+    con = sqlite3.connect("db/tests.db")
+    cur = con.cursor()
+    values_dog4 = {'Силы': 0,
+                   'Богатство': 0,
+                   'Любовь': 0,
+                   'Бессмертие': 0}
+    result_dog4 = cur.execute("""SELECT dog_4 FROM Results_dog""").fetchall()
+    for el in result_dog4:
+        values_dog4[el[0]] += 1
+    vals4 = [values_dog4['Силы'], values_dog4['Богатство'], values_dog4['Любовь'], values_dog4['Бессмертие']]
+    idx_remove4 = []
+    for el in vals4:
+        if el == 0:
+            idx_remove4.append(vals4.index(el))
+            vals4.remove(el)
+    labels4 = ["Силы", "Богатство", "Любовь", "Бессмертие"]
+    if idx_remove4:
+        for el in idx_remove4:
+            labels4.remove(labels4[el])
+    fig4, ax4 = plt.subplots()
+    ax4.pie(vals4, labels=labels4, autopct='%1.1f%%')
+    ax4.axis("equal")
+    plt.savefig('static/info_dog_diagram4.png')
+
+
+def info_dog_diagram5():
+    con = sqlite3.connect("db/tests.db")
+    cur = con.cursor()
+    values_dog5 = {'Желтый': 0,
+                   'Синий': 0,
+                   'Красный': 0,
+                   'Зеленый': 0}
+    result_dog5 = cur.execute("""SELECT dog_5 FROM Results_dog""").fetchall()
+    for el in result_dog5:
+        values_dog5[el[0]] += 1
+    vals5 = [values_dog5['Желтый'], values_dog5['Синий'], values_dog5['Красный'], values_dog5['Зеленый']]
+    idx_remove5 = []
+    for el in vals5:
+        if el == 0:
+            idx_remove5.append(vals5.index(el))
+            vals5.remove(el)
+    labels5 = ["Желтый", "Синий", "Красный", "Зеленый"]
+    if idx_remove5:
+        for el in idx_remove5:
+            labels5.remove(labels5[el])
+    fig5, ax5 = plt.subplots()
+    ax5.pie(vals5, labels=labels5, autopct='%1.1f%%')
+    ax5.axis("equal")
+    plt.savefig('static/info_dog_diagram5.png')
+
+
+@app.route('/statistics', methods=['GET', 'POST'])
+def statistics():
+    if if_auto:
+        main_dog_diagram()
+        return render_template('diagram.html')
+    else:
+        return render_template('diagram_error.html')
+
+
+@app.route('/dog_more_info', methods=['GET', 'POST'])
+def dog_more_info():
+    info_dog_diagram1()
+    info_dog_diagram2()
+    info_dog_diagram3()
+    info_dog_diagram4()
+    info_dog_diagram5()
+    return render_template('info_dog_diagram.html')
 
 
 def main():

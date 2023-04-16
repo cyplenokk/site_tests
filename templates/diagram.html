@@ -1,0 +1,36 @@
+{% extends "log_base.html" %}
+
+{% block content %}
+
+<style>
+
+    .text {
+    object-fit: cover;
+    text-align: center;
+    position: relative;
+  }
+    body {
+    text-align: center;
+  }
+
+
+
+
+
+
+
+</style>
+
+<center>
+    <body>
+    <h1 class="text">Тест: какая ты собака?</h1>
+
+    <img src="{{url_for('static', filename='main_dog_diagram.png')}}" class="text"/>
+    <div style="text-align: center;">
+        <a href="/dog_more_info" class="btn btn-primary btn-lg" role="button">Подробнее</a>
+    </div>
+    </body>
+</center>
+
+
+{% endblock %}
