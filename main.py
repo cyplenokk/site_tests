@@ -14,6 +14,8 @@ from flask import Flask, render_template, redirect
 from data.users import User
 from data.results_dog import Results_Dog
 from data.results_drink import Results_Drink
+from data.results_cat import Results_Cat
+from data.results_chin import Results_Chin
 from data.results import Results
 from data.reqq import Requests
 
@@ -61,7 +63,7 @@ dog_results = {
 drink = {
     'кофе': ['Волнение', 'Дождь', 'Осень', 'Детектив', 'Заранее'],
     'сок': ['Жизнерадостный', 'Солнце', 'Лето', 'Роман', 'Ничего'],
-    'молочный коктейль': ['Мечтательный', 'Снег', 'Зима', 'Фэнтези', 'Когда как'],
+    'молочный коктейль': ['Мечтательный', 'Снег', 'Зима', 'Фэнтези', 'Умею'],
     'чай': ['Задумчивый', 'Облачно', 'Весна', 'Фантастика', 'Прокрастинирую']
 }
 
@@ -80,7 +82,53 @@ drink_results = {
     'чай': 0
 }
 
-last_drink = ''
+cat = {
+    'мейн-кун': ['Искусство', 'Экстраверт', 'Инди', 'Инстаграм', 'Да'],
+    'сиамская кошка': ['Математика', 'Амбиверт', 'Рок', 'Фейсбук', 'Иногда'],
+    'русская голубая': ['Гуманитарные науки', 'Незнаю', 'Поп', 'ВК', 'Неиспытывал'],
+    'сфинкс': ['Биология', 'Интроверт', 'Рэп', 'Твиттер', 'Нет']
+}
+
+cat_inv = {
+    '1': ['Математика', 'Гуманитарные науки', 'Биология', 'Искусство'],
+    '2': ['Амбиверт', 'Экстраверт', 'Интроверт', 'Незнаю'],
+    '3': ['Рок', 'Рэп', 'Поп', 'Инди'],
+    '4': ['Фейсбук', 'Твиттер', 'Инстаграм', 'ВК'],
+    '5': ['Нет', 'Да', 'Иногда', 'Неиспытывал']
+}
+
+cat_results = {
+    'мейн-кун': 0,
+    'сиамская кошка': 0,
+    'русская голубая': 0,
+    'сфинкс': 0
+}
+
+chin = {
+    'малая длиннохвостая шиншилла': ['Комедия', 'Семья', 'Высота', 'Трудолюбие', 'Да'],
+    'береговая шиншилла': ['Артхаус', 'Группа', 'Одиночество', 'Ум', 'Нетда'],
+    'короткохвостая шиншилла': ['Боевик', 'Друг', 'Разочарованность', 'Чувственность', 'Данет'],
+    'большая шиншилла': ['Фантастика', 'Один', 'Смерть', 'Харизма', 'Нет']
+}
+
+chin_inv = {
+    '1': ['Комедия', 'Боевик', 'Фантастика', 'Артхаус'],
+    '2': ['Группа', 'Семья', 'Друг', 'Один'],
+    '3': ['Одиночество', 'Смерть', 'Высота', 'Разочарованность'],
+    '4': ['Ум', 'Харизма', 'Трудолюбие', 'Чувственность'],
+    '5': ['Данет', 'Нетда', 'Да', 'Нет']
+}
+
+chin_results = {
+    'малая длиннохвостая шиншилла': 0,
+    'береговая шиншилла': 0,
+    'короткохвостая шиншилла': 0,
+    'большая шиншилла': 0
+}
+
+
+
+last_dog = ''
 dog_ins = [0, 0, 0, 0, 0]
 dog_spisok = []
 
@@ -117,6 +165,45 @@ last_genre_num = ''
 
 last_color = ''
 last_color_num = ''
+
+last_cat = ''
+cat_ins = [0, 0, 0, 0, 0]
+cat_spisok = []
+
+last_sub = ''
+last_sub_num = ''
+
+last_type = ''
+last_type_num = ''
+
+last_mus = ''
+last_mus_num = ''
+
+last_app = ''
+last_app_num = ''
+
+last_fri = ''
+last_fri_num = ''
+
+
+last_chin = ''
+chin_ins = [0, 0, 0, 0, 0]
+chin_spisok = []
+
+last_film = ''
+last_film_num = ''
+
+last_people = ''
+last_people_num = ''
+
+last_fear = ''
+last_fear_num = ''
+
+last_like = ''
+last_like_num = ''
+
+last_believe = ''
+last_believe_num = ''
 
 
 @app.route("/")
@@ -561,6 +648,414 @@ def result_drink():
     db_sess.commit()
 
     return render_template("result_dog.html", head='Какой вы напиток?', title=result, spis=drink_spisok)
+
+
+
+@app.route("/cat_test_1", methods=['POST', 'GET'])
+def cat_1():
+    global cat_spisok, cat, cat_results, result, last_sub, cat_ins, last_sub_num
+    if request.method == 'POST':
+
+        result = request.form.get('subject')
+
+        for key in cat:
+            if cat[key][0] == result:
+                cat_ins[0] += 1
+                if cat_ins[0] > 1:
+                    cat_spisok.remove(last_sub)
+                    cat_results[last_sub_num] -= 1
+                cat_results[key] += 1
+                last_sub_num = key
+                cat_spisok.append(result)
+                last_sub = result
+        return redirect("/cat_test_2")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы кот?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='В какой области вы чувствуете себя более уверенно?', first='Математика',
+                               second='Гуманитарные науки', third='Биология',
+                               fourth='Искусство', source='/cat_test_1',
+                               id_1='Maths', id_2='Gum', id_3='Biology', id_4='Art',
+                               value_1='Математика',
+                               value_2='Гуманитарные науки', value_3='Биология', value_4='Искусство', name='subject',
+                               spisok=cat_spisok, message='Дальше', progress='0%', count=cat_ins,
+                               picture='static/img/cat_1.jpg')
+
+
+@app.route("/cat_test_2", methods=['POST', 'GET'])
+def cat_2():
+    global cat_spisok, cat, cat_results, result, cat_ins, last_type, last_type_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('type')
+
+        for key in cat:
+            if cat[key][1] == result:
+                cat_ins[1] += 1
+                if cat_ins[1] > 1:
+                    cat_spisok.remove(last_type)
+                    cat_results[last_type_num] -= 1
+                cat_results[key] += 1
+                last_type_num = key
+                cat_spisok.append(result)
+                last_type = result
+        return redirect("/cat_test_3")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы кот?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='Кем вы себя считаете?', first='Амбивертом',
+                               second='Экстравертом', third='Интровертом',
+                               fourth='Не знаю', source='/cat_test_2',
+                               id_1='Ambi', id_2='Extra', id_3='Intro', id_4='Dont',
+                               value_1='Амбиверт',
+                               value_2='Экстраверт', value_3='Интроверт', value_4='Незнаю', name='type', spisok=cat_spisok,
+                               message='Дальше', progress='20%', count=cat_ins, picture='static/img/cat_2.jpg')
+
+
+@app.route("/cat_test_3", methods=['POST', 'GET'])
+def cat_3():
+    global cat_spisok, cat, cat_results, result, cat_ins, last_mus, last_mus_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('music')
+
+        for key in cat:
+            if cat[key][2] == result:
+                cat_ins[2] += 1
+                if cat_ins[2] > 1:
+                    cat_spisok.remove(last_mus)
+                    cat_results[last_mus_num] -= 1
+                cat_results[key] += 1
+                last_mus_num = key
+                cat_spisok.append(result)
+                last_mus = result
+        return redirect("/cat_test_4")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы кот?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='Какую музыку предпочитаете?', first='Рок',
+                               second='Рэп', third='Поп', fourth='Инди', source='/cat_test_3',
+                               id_1='Rock', id_2='Rap', id_3='Pop', id_4='Indi',
+                               value_1='Рок',
+                               value_2='Рэп', value_3='Поп', value_4='Инди', name='music', spisok=cat_spisok,
+                               message='Дальше', progress='40%', count=cat_ins, picture='static/img/cat_3.webp')
+
+
+@app.route("/cat_test_4", methods=['POST', 'GET'])
+def cat_4():
+    global cat_spisok, cat, cat_results, result, cat_ins, last_app, last_app_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('app')
+
+        for key in cat:
+            if cat[key][3] == result:
+                cat_ins[3] += 1
+                if cat_ins[3] > 1:
+                    cat_spisok.remove(last_app)
+                    cat_results[last_app_num] -= 1
+                cat_results[key] += 1
+                last_app_num = key
+                cat_spisok.append(result)
+                last_app = result
+
+        return redirect("/cat_test_5")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы кот?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='Какая соцсеть удобнее для вас?', first='Фейсбук',
+                               second='Твиттер', third='Инстаграм', fourth='ВК',
+                               source='/cat_test_4',
+                               id_1='Facebook', id_2='Twitter', id_3='Insta', id_4='VK',
+                               value_1='Фейсбук',
+                               value_2='Твиттер', value_3='Инстаграм', value_4='ВК', name='app',
+                               spisok=cat_spisok,
+                               message='Дальше', progress='60%', count=cat_ins, picture='static/img/cat_4.jpeg')
+
+
+@app.route("/cat_test_5", methods=['POST', 'GET'])
+def cat_5():
+    global cat_spisok, cat, cat_results, result, cat_ins, last_fri, last_fri_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('friends')
+
+        for key in cat:
+            if cat[key][4] == result:
+                cat_ins[4] += 1
+                if cat_ins[4] > 1:
+                    cat_spisok.remove(last_fri)
+                    cat_results[last_fri_num] -= 1
+                cat_results[key] += 1
+                last_fri_num = key
+                cat_spisok.append(result)
+                last_fri = result
+
+        return redirect("/cat_results")
+    else:
+
+        return render_template("dog_test_1.html", head='Какой вы кот?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='Сложно ли вам было бы без друзей?', first='Нет, я могу побыть и один',
+                               second='Да, сложно', third='Иногда было бы',
+                               fourth='Не испытывал', source='/cat_test_5',
+                               id_1='Yes', id_2='No', id_3='Some', id_4='Know',
+                               value_1='Нет',
+                               value_2='Да', value_3='Иногда', value_4='Неиспытывал', name='friends',
+                               spisok=cat_spisok,
+                               message='Завершить', progress='80%', count=cat_ins, picture='static/img/cat_5.webp')
+
+
+@app.route("/cat_results", )
+def result_cat():
+    global cat_spisok, cat, cat_results, result, user_id, cat_inv
+
+    maximum = 0
+    for key in cat_results:
+        if cat_results[key] > maximum:
+            maximum = cat_results[key]
+            result = key
+
+    new_spisok = []
+    for key in cat_inv:
+        for item in cat_spisok:
+            if item in cat_inv[key] and item not in new_spisok:
+                new_spisok.append(item)
+
+    db_sess = db_session.create_session()
+    res = Results_Cat(
+        cat_1=(cat_spisok)[0],
+        cat_2=(cat_spisok)[1],
+        cat_3=(cat_spisok)[2],
+        cat_4=(cat_spisok)[3],
+        cat_5=(cat_spisok)[4],
+        user_id=user_id
+    )
+    db_sess.add(res)
+    db_sess.commit()
+
+    db_sess = db_session.create_session()
+    ress = Results(
+        cat=result,
+        user_id=user_id
+    )
+    db_sess.add(ress)
+    db_sess.commit()
+
+    return render_template("result_dog.html", head='Какой вы кот?', title=result, spis=cat_spisok)
+
+
+
+@app.route("/chin_test_1", methods=['POST', 'GET'])
+def chin_1():
+    global chin_spisok, chin, chin_results, result, last_film, chin_ins, last_film_num
+    if request.method == 'POST':
+
+        result = request.form.get('film')
+
+        for key in chin:
+            if chin[key][0] == result:
+                chin_ins[0] += 1
+                if chin_ins[0] > 1:
+                    chin_spisok.remove(last_film)
+                    chin_results[last_film_num] -= 1
+                chin_results[key] += 1
+                last_film_num = key
+                chin_spisok.append(result)
+                last_film = result
+        return redirect("/chin_test_2")
+    else:
+
+        return render_template("dog_test_1.html", head='Какая вы шиншилла?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='Какое кино вы бы посмотрели?', first='Комедия',
+                               second='Боевик', third='Фантастика',
+                               fourth='Артхаус', source='/chin_test_1',
+                               id_1='Comedian', id_2='Battle', id_3='Fanta', id_4='Arthouse',
+                               value_1='Комедия',
+                               value_2='Боевик', value_3='Фантастика', value_4='Артхаус', name='film',
+                               spisok=chin_spisok, message='Дальше', progress='0%', count=chin_ins,
+                               picture='static/img/chin_1.webp')
+
+
+@app.route("/chin_test_2", methods=['POST', 'GET'])
+def chin_2():
+    global chin_spisok, chin, chin_results, result, chin_ins, last_people, last_people_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('people')
+
+        for key in chin:
+            if chin[key][1] == result:
+                chin_ins[1] += 1
+                if chin_ins[1] > 1:
+                    chin_spisok.remove(last_people)
+                    chin_results[last_people_num] -= 1
+                chin_results[key] += 1
+                last_people_num = key
+                chin_spisok.append(result)
+                last_people = result
+        return redirect("/chin_test_3")
+    else:
+
+        return render_template("dog_test_1.html", head='Какая вы шиншилла?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='С кем обычно вы проводите свое свободное время?', first='С группой друзей',
+                               second='С семьей', third='С лучшим другом',
+                               fourth='В одиночестве', source='/chin_test_2',
+                               id_1='Group', id_2='Family', id_3='Friend', id_4='Alone',
+                               value_1='Группа',
+                               value_2='Семья', value_3='Друг', value_4='Один', name='people', spisok=chin_spisok,
+                               message='Дальше', progress='20%', count=chin_ins, picture='static/img/chin_2.jpg')
+
+
+@app.route("/chin_test_3", methods=['POST', 'GET'])
+def chin_3():
+    global chin_spisok, chin, chin_results, result, chin_ins, last_fear, last_fear_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('fear')
+
+        for key in chin:
+            if chin[key][2] == result:
+                chin_ins[2] += 1
+                if chin_ins[2] > 1:
+                    chin_spisok.remove(last_fear)
+                    chin_results[last_fear_num] -= 1
+                chin_results[key] += 1
+                last_fear_num = key
+                chin_spisok.append(result)
+                last_fear = result
+        return redirect("/chin_test_4")
+    else:
+
+        return render_template("dog_test_1.html", head='Какая ты шиншилла?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='Ваш страх?', first='Одиночество',
+                               second='Смерть', third='Высота', fourth='Разочарованность', source='/chin_test_3',
+                               id_1='Lonely', id_2='Death', id_3='Height', id_4='Dissapoint',
+                               value_1='Одиночество',
+                               value_2='Смерть', value_3='Высота', value_4='Разочарованность', name='fear', spisok=chin_spisok,
+                               message='Дальше', progress='40%', count=chin_ins, picture='static/img/chin_3.jfif')
+
+
+@app.route("/chin_test_4", methods=['POST', 'GET'])
+def chin_4():
+    global chin_spisok, chin, chin_results, result, chin_ins, last_like, last_like_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('like')
+
+        for key in chin:
+            if chin[key][3] == result:
+                chin_ins[3] += 1
+                if chin_ins[3] > 1:
+                    chin_spisok.remove(last_like)
+                    chin_results[last_like_num] -= 1
+                chin_results[key] += 1
+                last_like_num = key
+                chin_spisok.append(result)
+                last_like = result
+
+        return redirect("/chin_test_5")
+    else:
+
+        return render_template("dog_test_1.html", head='Какая ты шиншилла?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='Что больше всего вас привлекает в людях?', first='Ум',
+                               second='Харизма', third='Трудолюбие', fourth='Чувственность',
+                               source='/chin_test_4',
+                               id_1='Smart', id_2='Kharizma', id_3='Doing', id_4='Feels',
+                               value_1='Ум',
+                               value_2='Харизма', value_3='Трудолюбие', value_4='Чувственность', name='like',
+                               spisok=chin_spisok,
+                               message='Дальше', progress='60%', count=chin_ins, picture='static/img/chin_4.webp')
+
+
+@app.route("/chin_test_5", methods=['POST', 'GET'])
+def chin_5():
+    global chin_spisok, chin, chin_results, result, chin_ins, last_believe, last_believe_num
+
+    if request.method == 'POST':
+
+        result = request.form.get('believe')
+
+        for key in chin:
+            if chin[key][4] == result:
+                chin_ins[4] += 1
+                if chin_ins[4] > 1:
+                    chin_spisok.remove(last_believe)
+                    chin_results[last_believe_num] -= 1
+                chin_results[key] += 1
+                last_believe_num = key
+                chin_spisok.append(result)
+                last_believe = result
+
+        return redirect("/chin_results")
+    else:
+
+        return render_template("dog_test_1.html", head='Какая ты шиншилла?', if_auto=if_auto, user=user_name,
+                               result=result,
+                               title='Доверяете ли вы людям?', first='Скорее да, чем нет',
+                               second='Скорее нет, чем да', third='Определенно',
+                               fourth='Нет', source='/chin_test_5',
+                               id_1='Yesno', id_2='Noyes', id_3='Yes', id_4='No',
+                               value_1='Данет',
+                               value_2='Нетда', value_3='Да', value_4='Нет', name='believe',
+                               spisok=chin_spisok,
+                               message='Завершить', progress='80%', count=chin_ins, picture='static/img/chin_5.jfif')
+
+
+@app.route("/chin_results", )
+def result_chin():
+    global chin_spisok, chin, chin_results, result, user_id, chin_inv
+
+    maximum = 0
+    for key in chin_results:
+        if chin_results[key] > maximum:
+            maximum = chin_results[key]
+            result = key
+
+    new_spisok = []
+    for key in chin_inv:
+        for item in chin_spisok:
+            if item in chin_inv[key] and item not in new_spisok:
+                new_spisok.append(item)
+
+    db_sess = db_session.create_session()
+    res = Results_Chin(
+        chin_1=(chin_spisok)[0],
+        chin_2=(chin_spisok)[1],
+        chin_3=(chin_spisok)[2],
+        chin_4=(chin_spisok)[3],
+        chin_5=(chin_spisok)[4],
+        user_id=user_id
+    )
+    db_sess.add(res)
+    db_sess.commit()
+
+    db_sess = db_session.create_session()
+    ress = Results(
+        cat=result,
+        user_id=user_id
+    )
+    db_sess.add(ress)
+    db_sess.commit()
+
+    return render_template("result_dog.html", head='Какая вы шиншилла?', title=result, spis=cat_spisok)
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
